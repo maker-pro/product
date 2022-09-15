@@ -10,8 +10,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-<<<<<<< HEAD
-=======
 .idea
 .gitignore
->>>>>>> 215acd488088d88fde109703f0373426698a0b61
