@@ -53,7 +53,11 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
+<<<<<<< HEAD
             'collation' => 'utf8mb4_general_ci',
+=======
+            'collation' => 'utf8mb4_unicode_ci',
+>>>>>>> 215acd488088d88fde109703f0373426698a0b61
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,

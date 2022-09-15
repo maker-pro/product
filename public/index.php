@@ -1,12 +1,20 @@
 <?php
+<<<<<<< HEAD
 #
+=======
+
+>>>>>>> 215acd488088d88fde109703f0373426698a0b61
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
+<<<<<<< HEAD
 
+=======
+echo 111;
+>>>>>>> 215acd488088d88fde109703f0373426698a0b61
 define('LARAVEL_START', microtime(true));
 
 /*

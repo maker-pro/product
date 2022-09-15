@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+<<<<<<< HEAD
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
 
 Route::group(['namespace' => 'Api'], function (){
     Route::get('phone', 'TestController@phone');
+=======
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+>>>>>>> 215acd488088d88fde109703f0373426698a0b61
 });
