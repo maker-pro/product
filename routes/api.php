@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+//Route::group(['namespace'=>'Api\Video\V1','prefix' => 'vv1', 'middleware' => ['ip_check']], function () {
+Route::group(['namespace'=>'Api\Video\V1','prefix' => 'vv1'], function () {
+    Route::get('/test','TestController@phone')->name('test.phone');
 });

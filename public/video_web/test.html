@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>测试 - layui</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-carousel" id="test1">
+    <div carousel-item>
+        <div><a href="https://www.baidu.com/"><img src="http://api.pingcc.cn/video/img/天天七点综/天天七点综.jpg" alt=""></a></div>
+        <div><a href="https://www.baidu.com/"><img src="http://api.pingcc.cn/video/img/邪神与厨二病少女第三季/邪神与厨二病少女第三季.jpg" alt=""></a></div>
+        <div><a href="https://www.baidu.com/"><img src="http://api.pingcc.cn/video/img/混沌丹神/混沌丹神.jpg" alt=""></a></div>
+        <div><a href="https://www.baidu.com/"><img src="http://api.pingcc.cn/video/img/千金丫环/千金丫环.jpg" alt=""></a></div>
+        <div><a href="https://www.baidu.com/"><img src="http://api.pingcc.cn/video/img/我家师父超凶哒/我家师父超凶哒.jpg" alt=""></a></div>
+    </div>
+</div>
+
+<!-- body 末尾处引入 layui -->
+<script src="layui/layui.js"></script>
+<script>
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+</script>
+</body>
+</html>
