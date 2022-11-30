@@ -1,4 +1,15 @@
 <?php return array (
+  'encore/laravel-admin' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Encore\\Admin\\AdminServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Admin' => 'Encore\\Admin\\Facades\\Admin',
+    ),
+  ),
   'facade/ignition' => 
   array (
     'providers' => 
@@ -22,6 +33,13 @@
     'providers' => 
     array (
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
+    ),
+  ),
+  'laravel-admin-ext/grid-lightbox' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Encore\\Grid\\Lightbox\\LightboxServiceProvider',
     ),
   ),
   'laravel/tinker' => 

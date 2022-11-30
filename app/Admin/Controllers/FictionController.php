@@ -2,26 +2,25 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Video;
+use App\Model\Fiction;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class VideoController extends AdminController
+class FictionController extends AdminController
 {
-    protected $title = 'Video';
+    protected $title = 'Fiction';
 
     public function grid()
     {
-        $grid = new Grid(new Video());
+        $grid = new Grid(new Fiction());
         $grid->column('title', __('Title'));
-        $grid->column('director', __('Director'))->width(300);
-        $grid->column('actor', __('Actor'))->width(300);
-        $grid->column('region', __('Region'));
-        $grid->column('videoType', __('Video Type'));
+        $grid->column('author', __('Author'));
+        $grid->column('fictionType', __('Fiction Type'))->label();
+        $grid->column('descs', __('Deatil'))->width(400);
         $grid->column('cover', __('Cover'))->lightbox(['width' => 80, 'height' => 80]);
-        $grid->column('releaseTime', __('Release Time'));
+        $grid->column('updateTime', __('Update Time'));
 
         $grid->filter(function($filter){
             // 去掉默认的id过滤器
@@ -34,14 +33,13 @@ class VideoController extends AdminController
 
     public function detail($id)
     {
-        $show = new Show(Video::findOrFail($id));
+        $show = new Show(Fiction::findOrFail($id));
         $show->field('title', __('Title'));
-        $show->field('director', __('Director'));
-        $show->field('actor', __('Actor'));
-        $show->field('region', __('Region'));
-        $show->field('videoType', __('Video Type'));
-        $show->field('cover', __('Cover'))->image('', 150, 150);
-        $show->field('releaseTime', __('Release Time'));
+        $show->field('author', __('Author'));
+        $show->field('fictionType', __('Fiction Type'));
+        $show->field('descs', __('Detail'));
+        $show->field('cover', __('Cover'))->image('', 150, 150);;
+        $show->field('updateTime', __('Update Time'));
         return $show;
     }
 
