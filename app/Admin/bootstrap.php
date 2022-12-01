@@ -19,3 +19,7 @@
  */
 
 Encore\Admin\Form::forget(['map', 'editor']);
+use Encore\Admin\Show;
+use App\Admin\Extensions\Show\ChapterList;
+
+Show::extend('chapter_list', ChapterList::class);

@@ -13,7 +13,7 @@ class Fiction extends Model
      * @var array
      */
     protected $fillable = [
-        "title", "author", "fictionType", "descs", "cover", "updateTime"
+        "title", "author", "fictionType", "descs", "cover", "updateTime", 'chapterStatus'
     ];
 
     /**
@@ -24,4 +24,8 @@ class Fiction extends Model
     protected $hidden = [
         "fictionId"
     ];
+
+    public function chapters() {
+        return $this->hasMany('App\Model\Chapter', 'fictionId', 'fictionId');
+    }
 }

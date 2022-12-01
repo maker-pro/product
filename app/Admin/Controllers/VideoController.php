@@ -20,7 +20,6 @@ class VideoController extends AdminController
         $grid->column('actor', __('Actor'))->width(300);
         $grid->column('region', __('Region'));
         $grid->column('videoType', __('Video Type'));
-        $grid->column('cover', __('Cover'))->lightbox(['width' => 80, 'height' => 80]);
         $grid->column('releaseTime', __('Release Time'));
 
         $grid->filter(function($filter){
@@ -40,8 +39,9 @@ class VideoController extends AdminController
         $show->field('actor', __('Actor'));
         $show->field('region', __('Region'));
         $show->field('videoType', __('Video Type'));
-        $show->field('cover', __('Cover'))->image('', 150, 150);
         $show->field('releaseTime', __('Release Time'));
+        $show->field('cover', __('Cover'))->image('', 150, 150);
+        $show->field('descs', __('Deatil'));
         return $show;
     }
 
