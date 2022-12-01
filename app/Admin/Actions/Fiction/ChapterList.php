@@ -14,6 +14,14 @@ class ChapterList extends RowAction
         return $this->response()->success($model->title)->refresh();
     }
 
+//    public function form()
+//    {
+//        $this->file('file', '请选择文件');
+//    }
+    public function grid() {
+
+    }
+
     public function html()
     {
         return <<<HTML

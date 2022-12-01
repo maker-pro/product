@@ -15,4 +15,9 @@ Route::group([
     $router->resource('/product/video', 'VideoController');
     // fiction
     $router->resource('/product/fiction', 'FictionController');
+
+
+    // admin api
+    $router->post('/api-v1/get_fiction_chapter', 'ApiController@getFictionChapter');
+    // admin api end
 });
