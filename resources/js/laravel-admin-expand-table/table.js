@@ -8,11 +8,13 @@
         url: '',
         params: {},
         columns: {},
-        init: function (url, params={}, columns={}, limit=10) {
+        init: function (url, params={}, columns={}, limit=10, method = 'POST', box_type = '') {
             this.url = url;
             this.params = params;
             this.limit = limit;
             this.columns = columns;
+            this.method = method;
+            this.box_type = box_type;
             return this;
         },
         make: function (title) {
@@ -80,8 +82,8 @@
             //loading
             this._loading();
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            xhr.timeout = 3000;
+            xhr.open(this.method, url, true);
+            xhr.timeout = 15000;
             xhr.responseType = "json";
             var token= document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -109,9 +111,11 @@
             this._paginationNode = ul;
             this._boxNode.append(ul);
 
-            this._paginationNode = ul;
-            this._boxFootNode.textContent = "总共 "+response.total+ "条";
-            this._boxFootNode.append(ul);
+            if (this.box_type != 'scroll-box') {
+                this._paginationNode = ul;
+                this._boxFootNode.textContent = "总共 "+response.total+ "条";
+                this._boxFootNode.append(ul);
+            }
             this._boxNode.append(this._boxFootNode);
             this._modalBodyNode.append(this._boxNode);
             this._createTable(this.current_page,response.data);
@@ -261,27 +265,60 @@
             let head = document.createElement('thead');
             let h_tr = document.createElement('tr');
 
-            for (let key in laravelAdminExpandTable.columns) {
-                let name = laravelAdminExpandTable.columns[key];
-                let th = document.createElement('th');
-                th.textContent = name;
-                h_tr.append(th);
+            if (this.box_type != 'scroll-box') {
+                for (let key in laravelAdminExpandTable.columns) {
+                    let name = laravelAdminExpandTable.columns[key];
+                    let th = document.createElement('th');
+                    th.textContent = name;
+                    h_tr.append(th);
+                }
             }
 
             let tbody = document.createElement('tbody');
             for (let k in data){
                 let d = data[k];
                 let tr = document.createElement('tr');
-                tr.textContent = name;
-                for(let key in laravelAdminExpandTable.columns){
-                    if (!d.hasOwnProperty(key)){
-                        continue;
+
+                if (this.box_type == 'scroll-box') {
+                    let td_chapter_content = document.createElement('td');
+                    let div_chapter_content = document.createElement('div');
+                    div_chapter_content.style.height = '500px';
+                    div_chapter_content.style.padding = '10px 20px';
+                    div_chapter_content.style.overflow = 'scroll';
+                    div_chapter_content.style.background = '#272822';
+                    div_chapter_content.style.color = '#f8f8f2';
+                    div_chapter_content.style.letterSpacing = '1.5px';
+                    div_chapter_content.style.lineHeight = '25px';
+                    div_chapter_content.style.textIndent = '1cm';
+                    div_chapter_content.innerText = d.content;
+                    td_chapter_content.append(div_chapter_content);
+                    tr.append(td_chapter_content);
+                    tbody.append(tr);
+                } else {
+                    tr.setAttribute('key', d['chapterId'])
+                    tr.style.cursor = 'pointer';
+                    tr.textContent = name;
+                    for(let key in laravelAdminExpandTable.columns){
+                        if (!d.hasOwnProperty(key)){
+                            continue;
+                        }
+                        let td = document.createElement('td');
+                        td.innerHTML = d[key];
+                        tr.append(td);
                     }
-                    let td = document.createElement('td');
-                    td.innerHTML = d[key];
-                    tr.append(td);
+                    tbody.append(tr);
+
+                    tr.addEventListener('click', function () {
+                        laravelAdminExpandTable.init(
+                            '/admin/api-v1/get_chapter_content?chapterId=' + this.getAttribute('key'),
+                            {},
+                            {content: '章节内容'},
+                            1,
+                            'GET',
+                            'scroll-box'
+                        ).make('章节内容')
+                    })
                 }
-                tbody.append(tr);
             }
 
             head.append(h_tr);

@@ -19,8 +19,9 @@ class FictionController extends AdminController
     public function grid()
     {
         $grid = new Grid(new Fiction());
-        // 原始的 title
         $grid->column('fictionId', __('Fiction ID'));
+
+        // 原始的 title
         $grid->column('title', __('Title'));
 
         // 使用laravel admin 自带的 model 模态框来展示每本小说的章节
@@ -31,6 +32,7 @@ class FictionController extends AdminController
         //    return new Table(['标题'], $products->toArray());
         //});
 
+        // 使用 laravel-admin-expand-table/table.js 展示每本小说的章节
         $script = file_get_contents(resource_path() . '/js/laravel-admin-expand-table/table.js');
         $script .= <<<EOF
             $('.column-fictionId').click(function() {
@@ -38,13 +40,14 @@ class FictionController extends AdminController
                 laravelAdminExpandTable.init(
                     '/admin/api-v1/get_fiction_chapter',
                     {'fictionId': fictionId},
-                    {chapterId: '章节ID', chapterTitle: '章节标题'},
+                    {chapterId: '章节ID', chapterTitle: '章节标题', status: '是否下载'},
                     10
                 ).make('章节列表')
             })
 
 EOF;
         Admin::script($script);
+        Admin::style('.column-fictionId {cursor: pointer; color: #007bff;}');
 
 
         $grid->column('author', __('Author'));

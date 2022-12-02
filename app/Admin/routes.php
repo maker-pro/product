@@ -19,5 +19,6 @@ Route::group([
 
     // admin api
     $router->post('/api-v1/get_fiction_chapter', 'ApiController@getFictionChapter');
+    $router->get('/api-v1/get_chapter_content', 'ApiController@getChapterContent');
     // admin api end
 });
