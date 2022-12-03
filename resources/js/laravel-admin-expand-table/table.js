@@ -8,13 +8,12 @@
         url: '',
         params: {},
         columns: {},
-        init: function (url, params={}, columns={}, limit=10, method = 'POST', box_type = '') {
+        init: function (url, params={}, columns={}, limit=10, method = 'POST') {
             this.url = url;
             this.params = params;
             this.limit = limit;
             this.columns = columns;
             this.method = method;
-            this.box_type = box_type;
             return this;
         },
         make: function (title) {
@@ -111,11 +110,9 @@
             this._paginationNode = ul;
             this._boxNode.append(ul);
 
-            if (this.box_type != 'scroll-box') {
-                this._paginationNode = ul;
-                this._boxFootNode.textContent = "总共 "+response.total+ "条";
-                this._boxFootNode.append(ul);
-            }
+            this._paginationNode = ul;
+            this._boxFootNode.textContent = "总共 "+response.total+ "条";
+            this._boxFootNode.append(ul);
             this._boxNode.append(this._boxFootNode);
             this._modalBodyNode.append(this._boxNode);
             this._createTable(this.current_page,response.data);
@@ -265,13 +262,11 @@
             let head = document.createElement('thead');
             let h_tr = document.createElement('tr');
 
-            if (this.box_type != 'scroll-box') {
-                for (let key in laravelAdminExpandTable.columns) {
-                    let name = laravelAdminExpandTable.columns[key];
-                    let th = document.createElement('th');
-                    th.textContent = name;
-                    h_tr.append(th);
-                }
+            for (let key in laravelAdminExpandTable.columns) {
+                let name = laravelAdminExpandTable.columns[key];
+                let th = document.createElement('th');
+                th.textContent = name;
+                h_tr.append(th);
             }
 
             let tbody = document.createElement('tbody');
@@ -279,46 +274,104 @@
                 let d = data[k];
                 let tr = document.createElement('tr');
 
-                if (this.box_type == 'scroll-box') {
-                    let td_chapter_content = document.createElement('td');
-                    let div_chapter_content = document.createElement('div');
-                    div_chapter_content.style.height = '500px';
-                    div_chapter_content.style.padding = '10px 20px';
-                    div_chapter_content.style.overflow = 'scroll';
-                    div_chapter_content.style.background = '#272822';
-                    div_chapter_content.style.color = '#f8f8f2';
-                    div_chapter_content.style.letterSpacing = '1.5px';
-                    div_chapter_content.style.lineHeight = '25px';
-                    div_chapter_content.style.textIndent = '1cm';
-                    div_chapter_content.innerText = d.content;
-                    td_chapter_content.append(div_chapter_content);
-                    tr.append(td_chapter_content);
-                    tbody.append(tr);
-                } else {
-                    tr.setAttribute('key', d['chapterId'])
-                    tr.style.cursor = 'pointer';
-                    tr.textContent = name;
-                    for(let key in laravelAdminExpandTable.columns){
-                        if (!d.hasOwnProperty(key)){
-                            continue;
-                        }
-                        let td = document.createElement('td');
-                        td.innerHTML = d[key];
-                        tr.append(td);
+                tr.setAttribute('key', d['chapterId'])
+                tr.style.cursor = 'pointer';
+                tr.textContent = name;
+                for(let key in laravelAdminExpandTable.columns){
+                    if (!d.hasOwnProperty(key)){
+                        continue;
                     }
-                    tbody.append(tr);
-
-                    tr.addEventListener('click', function () {
-                        laravelAdminExpandTable.init(
-                            '/admin/api-v1/get_chapter_content?chapterId=' + this.getAttribute('key'),
-                            {},
-                            {content: '章节内容'},
-                            1,
-                            'GET',
-                            'scroll-box'
-                        ).make('章节内容')
-                    })
+                    let td = document.createElement('td');
+                    td.innerHTML = d[key];
+                    tr.append(td);
                 }
+                tbody.append(tr);
+
+                tr.addEventListener('click', function () {
+                    $.get('/admin/api-v1/get_chapter_content?chapterId=' + this.getAttribute('key'),{}, function (res) {
+                        if (res.status) {
+                            let div_chapter_content = document.createElement('div');
+                            div_chapter_content.id = 'chapter-content-model';
+                            div_chapter_content.style.height = document.body.clientHeight + 'px';
+                            div_chapter_content.style.width = document.body.clientWidth + 'px';
+                            div_chapter_content.style.position = 'fixed';
+                            div_chapter_content.style.top = '0';
+                            div_chapter_content.style.left = '0';
+                            div_chapter_content.style.overflowX = 'hidden';
+                            div_chapter_content.style.zIndex = '9999';
+                            div_chapter_content.style.background = '#ccc';
+
+                            let div_chapter_content_header = document.createElement('div');
+                            div_chapter_content_header.style.width = '100%';
+                            div_chapter_content_header.style.background = '#e1e1e1';
+                            div_chapter_content_header.style.display = 'flex';
+                            div_chapter_content_header.style.flexDirection = 'row';
+                            div_chapter_content_header.style.justifyContent = 'space-between';
+                            div_chapter_content_header.style.padding = '0 15px';
+                            let div_chapter_content_header_title = document.createElement('h4');
+                            div_chapter_content_header_title.style.lineHeight = '35px';
+                            div_chapter_content_header_title.style.display = 'inline-block'
+                            div_chapter_content_header_title.innerText = '章节内容';
+
+                            let div_chapter_content_header_close = document.createElement('h4');
+                            div_chapter_content_header_close.innerText = 'X'
+                            div_chapter_content_header_close.style.display = 'inline-block'
+                            div_chapter_content_header_close.style.fontSize = 'x-large'
+                            div_chapter_content_header_close.style.fontWeight = 'bold'
+                            div_chapter_content_header_close.style.border = '1px solid #ccc'
+                            div_chapter_content_header_close.style.width = '35px'
+                            div_chapter_content_header_close.style.lineHeight = '35px'
+                            div_chapter_content_header_close.style.textAlign = 'center'
+                            div_chapter_content_header_close.style.cursor = 'pointer'
+                            div_chapter_content_header.append(div_chapter_content_header_title)
+                            div_chapter_content_header.append(div_chapter_content_header_close)
+                            div_chapter_content_header_close.addEventListener('click', function () {
+                                $("#chapter-content-model").remove();
+                            })
+
+                            let div_chapter_content_footer = document.createElement('div');
+                            div_chapter_content_footer.style.padding = '10px 20px';
+                            div_chapter_content_footer.style.overflow = 'scroll';
+                            div_chapter_content_footer.style.height = '550px';
+                            div_chapter_content_footer.style.background = '#272822';
+                            div_chapter_content_footer.style.color = '#f8f8f2';
+                            div_chapter_content_footer.style.letterSpacing = '1.5px';
+                            div_chapter_content_footer.style.lineHeight = '25px';
+                            div_chapter_content_footer.style.textIndent = '1cm';
+                            div_chapter_content_footer.innerText = res.content;
+
+                            div_chapter_content.append(div_chapter_content_header);
+                            div_chapter_content.append(div_chapter_content_footer);
+                            document.getElementsByTagName('body')[0].append(div_chapter_content);
+                        }
+                    })
+                    // laravelAdminExpandTable.init(
+                    //     '/admin/api-v1/get_chapter_content?chapterId=' + this.getAttribute('key'),
+                    //     {},
+                    //     {content: '章节内容'},
+                    //     1,
+                    //     'GET',
+                    // ).make('章节内容')
+                })
+
+                // if (this.box_type == 'scroll-box') {
+                //     let td_chapter_content = document.createElement('td');
+                //     let div_chapter_content = document.createElement('div');
+                //     div_chapter_content.style.height = '500px';
+                //     div_chapter_content.style.padding = '10px 20px';
+                //     div_chapter_content.style.overflow = 'scroll';
+                //     div_chapter_content.style.background = '#272822';
+                //     div_chapter_content.style.color = '#f8f8f2';
+                //     div_chapter_content.style.letterSpacing = '1.5px';
+                //     div_chapter_content.style.lineHeight = '25px';
+                //     div_chapter_content.style.textIndent = '1cm';
+                //     div_chapter_content.innerText = d.content;
+                //     td_chapter_content.append(div_chapter_content);
+                //     tr.append(td_chapter_content);
+                //     tbody.append(tr);
+                // } else {
+                //
+                // }
             }
 
             head.append(h_tr);

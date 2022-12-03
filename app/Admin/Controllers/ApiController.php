@@ -25,8 +25,8 @@ class ApiController extends AdminController
     {
         $chapterId = $request->input('chapterId');
         $chapter_content = Chapter::getContent($chapterId);
-//        return response()->json(["content" => $chapter_content, 'status' => true]);
-        return response()->json(["data" => [['content' => $chapter_content]], 'total' => 1]);
+        // return response()->json(["data" => [['content' => empty($chapter_content) ? "--- 暂无此章节 ---" : $chapter_content]], 'total' => 1]);
+        return response()->json(["content" => empty($chapter_content) ? '--- 暂无此章节 ---' : $chapter_content, 'status' => true]);
     }
 }
 
