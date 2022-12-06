@@ -25,11 +25,7 @@ class Video extends Model
         "videoId"
     ];
 
-//    public function getActorAttribute() {
-//        return array_map('trim', explode(',', $this->attributes['actor']));
-//    }
-//
-//    public function getDirectorAttribute() {
-//        return array_map('trim', explode(',', $this->attributes['director']));
-//    }
+    public function collections() {
+        return $this->hasMany('App\Model\Collection', 'videoId', 'videoId');
+    }
 }
