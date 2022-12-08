@@ -17,7 +17,7 @@ class ApiController extends AdminController
 
         $query = Chapter::where('fictionId', $fictionId);
         $total = $query->count();
-        $data = $query->select(DB::raw('if(chapterPath IS NULL, "否", "是") as status, chapterId, chapterTitle'))->orderBy('chapterIndex','asc')->offset(($page - 1) * $limit)->limit($limit)->get();
+        $data = $query->select(DB::raw('if(chapterPath IS NULL, "否", "是") as status, chapterId, chapterTitle'))->orderBy('chapterIndex', 'asc')->offset(($page - 1) * $limit)->limit($limit)->get();
         return response()->json(["data" => $data, 'total' => $total]);
     }
 
