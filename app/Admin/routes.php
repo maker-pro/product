@@ -10,7 +10,9 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
-    $router->get('/', 'HomeController@index')->name('home');
+    $router->get('/', 'HomeController@report');
+
+    $router->get('/home', 'HomeController@index')->name('home');
     // video
     $router->resource('/product/video', 'VideoController');
     // fiction
