@@ -32,6 +32,7 @@ class VideoController extends AdminController
 
         Admin::js('//vjs.zencdn.net/7.10.2/video.min.js');
         $script = <<<EOF
+            var player = null;
             let elements = $('.list-table > tbody > tr');
             for (var i= 0; i < elements.length; i++) {
                 $(elements[i]).attr('data-target', '#video-model')
@@ -41,13 +42,23 @@ class VideoController extends AdminController
                 let video_path = $(this).find('td')[1].textContent;
                 $('#source').attr('src', video_path);
                 $('#source').attr('type', 'application/x-mpegURL');
-                let player = videojs('myVideo', {
+                player = videojs('myVideo', {
                     bigPlayButton: true,
                     textTrackDisplay: false,
                     posterImage: false,
                     errorDisplay: false,
+                    aspectRatio: "16:9"
                 });
-                player.play();
+                player.on('loadeddata', () => {
+                    // 先设置静音
+                    player.muted(true);
+                    // 再执行播放
+                    player.play();
+                });
+                $('#video-model').on('hide.bs.modal', function (e) {
+                    player = null;
+                    console.log(11111111)
+                })
             });
             $('body').append($(`
                 <div class="modal fade" tabindex="-1" role="dialog" id="video-model">
