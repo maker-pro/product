@@ -13,7 +13,7 @@ class Fiction extends Model
      * @var array
      */
     protected $fillable = [
-        "title", "author", "fictionType", "descs", "cover", "updateTime", 'chapterStatus', 'fictionId', 'isActive'
+        "title", "author", "fictionType", "descs", "coverPath", "updateTime", 'chapterStatus', 'fictionId', 'isActive'
     ];
 
     /**

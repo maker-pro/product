@@ -59,6 +59,11 @@ EOF;
         $grid->column('updateTime', __('Update Time'));
         // 使用 lightbox 可以放大图片
         // $grid->column('cover', __('Cover'))->lightbox(['width' => 80, 'height' => 80]);
+        $grid->column('Fiction Cover')
+            ->display(function () {
+                return 'images/fiction_cover/' . $this->coverPath;
+            })->lightbox(['width' => 80, 'height' => 80]);
+
         $grid->filter(function($filter){
             // 去掉默认的id过滤器
             $filter->disableIdFilter();

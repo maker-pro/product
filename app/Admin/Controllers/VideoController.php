@@ -88,6 +88,10 @@ class VideoController extends AdminController
         $grid->column('region', __('Region'));
         $grid->column('videoType', __('Video Type'));
         $grid->column('releaseTime', __('Release Time'));
+        $grid->column('video Cover')
+            ->display(function () {
+                return 'images/video_cover/' . $this->coverPath;
+            })->lightbox(['width' => 80, 'height' => 80]);
 
         $grid->filter(function($filter){
             // 去掉默认的id过滤器
